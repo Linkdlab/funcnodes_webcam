@@ -97,6 +97,7 @@ class WebcamController:
             print("Waiting for capture thread to stop")
             while self._capture_thread is not None and self._capture_thread.is_alive():
                 await asyncio.sleep(0.05)
+
             if self._capture_thread is not None:
                 self._capture_thread.join()
             await asyncio.sleep(0.1)
