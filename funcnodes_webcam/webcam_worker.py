@@ -1,6 +1,10 @@
 from typing import Optional
-from funcnodes import FuncNodesExternalWorker, instance_nodefunction
-from funcnodes.io import NoValue, NodeOutputOptions
+from funcnodes import (
+    FuncNodesExternalWorker,
+    instance_nodefunction,
+    NoValue,
+    NodeOutputOptions,
+)
 import numpy as np
 from PIL import Image
 import cv2

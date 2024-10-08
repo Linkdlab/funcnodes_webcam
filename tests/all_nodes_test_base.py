@@ -117,21 +117,20 @@ class TestAllNodesBase(unittest.IsolatedAsyncioTestCase):
     @classmethod
     def setUpClass(cls):
 
-        def get_all_nodes_classes(shelf, current=None):
+        def get_all_nodes_classes(shelf:fn.Shelf, current=None):
             if current is None:
                 current = []
-            if "nodes" in shelf:
-                for node in shelf["nodes"]:
+            for node in shelf.nodes:
                     if node not in current:
                         current.append(node)
 
-            if "subshelves" in shelf:
-                for subshelf in shelf["subshelves"]:
-                    get_all_nodes_classes(subshelf, current)
+
+            for subshelf in shelf.subshelves:
+                get_all_nodes_classes(subshelf, current)
 
             return current
 
-        all_nodes = get_all_nodes_classes(NODE_SHELF)
+        all_nodes = fn.flatten_shelf(NODE_SHELF)[0]
         nodes_to_test = all_nodes.copy()
 
         for node in cls.ignore_nodes:
