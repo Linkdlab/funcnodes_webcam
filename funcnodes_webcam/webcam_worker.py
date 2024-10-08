@@ -1,22 +1,12 @@
-from typing import Optional
 from funcnodes import (
     FuncNodesExternalWorker,
     instance_nodefunction,
     NoValue,
-    NodeOutputOptions,
 )
-import numpy as np
-from PIL import Image
-import cv2
-import threading
 import time
-import signal
-import sys
 from .utils import (
     list_available_cameras,
-    VideoCapture,
     DEVICE_UPDATE_TIME,
-    cv2_image_preview_generator,
 )
 from .controller import WebcamController
 from funcnodes_opencv import OpenCVImageFormat
