@@ -4,7 +4,6 @@ import cv2
 import time
 import asyncio
 from multiprocessing import Process, Queue
-import numpy as np
 
 if sys.platform.startswith("win"):
 
