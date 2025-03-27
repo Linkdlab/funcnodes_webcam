@@ -117,10 +117,17 @@ class WebcamController:
 
     async def set_resolution(self, width: int, height: int):
         """Sets the resolution of the webcam."""
+
         if self._cap is not None:
             with self._cap_lock:
-                self._cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
-                self._cap.set(cv2.CAP_PROP_FRAME_WIDTH, height)
+                try:
+                    self._cap.set(cv2.CAP_PROP_FRAME_WIDTH, int(width))
+                except Exception:
+                    pass
+                try:
+                    self._cap.set(cv2.CAP_PROP_FRAME_HEIGHT, int(height))
+                except Exception:
+                    pass
                 actual_width = self._cap.get(cv2.CAP_PROP_FRAME_WIDTH)
                 actual_height = self._cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
             return actual_width, actual_height

@@ -12,6 +12,7 @@ from .utils import (
 from .controller import WebcamController, CAPTURE_BACKENDS, DEFAULT_BACKEND
 from funcnodes_opencv import OpenCVImageFormat
 from funcnodes_images import ImageFormat
+import asyncio
 
 
 class WebcamWorker(FuncNodesExternalWorker):
@@ -67,12 +68,15 @@ class WebcamWorker(FuncNodesExternalWorker):
 
     @instance_nodefunction(
         outputs=[
-            {"name": "actual_width ", "type": "int"},
+            {"name": "actual_width", "type": "int"},
             {"name": "actual_height", "type": "int"},
         ]
     )
     async def set_resolution(self, width: int, height: int) -> Tuple[int, int]:
-        return await self.controller.set_resolution(width, height)
+        print("Setting resolution", width, height)
+        res = await self.controller.set_resolution(width, height)
+        print("Actual resolution", res)
+        return res
 
     async def loop(self):
         if (
@@ -84,7 +88,7 @@ class WebcamWorker(FuncNodesExternalWorker):
         #        else:
         if time.time() - self._last_device_update > DEVICE_UPDATE_TIME:
             self._last_device_update = time.time()
-            await self.update_available_cameras()
+            asyncio.create_task(self.update_available_cameras())
 
     @instance_nodefunction(
         default_render_options={"data": {"src": "out", "type": "image"}},
