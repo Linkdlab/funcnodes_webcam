@@ -1,3 +1,4 @@
+from typing import Tuple
 from funcnodes import (
     FuncNodesExternalWorker,
     instance_nodefunction,
@@ -8,9 +9,10 @@ from .utils import (
     list_available_cameras,
     DEVICE_UPDATE_TIME,
 )
-from .controller import WebcamController
+from .controller import WebcamController, CAPTURE_BACKENDS, DEFAULT_BACKEND
 from funcnodes_opencv import OpenCVImageFormat
 from funcnodes_images import ImageFormat
+import asyncio
 
 
 class WebcamWorker(FuncNodesExternalWorker):
@@ -32,10 +34,17 @@ class WebcamWorker(FuncNodesExternalWorker):
         except KeyError:
             pass
 
-    @instance_nodefunction()
-    async def start_capture(self, device: int = -1):
+    @instance_nodefunction(
+        default_io_options={
+            "backend": {
+                "value_options": {"options": list(CAPTURE_BACKENDS.keys())},
+            }
+        }
+    )
+    async def start_capture(self, device: int = -1, backend: str = DEFAULT_BACKEND[0]):
         device = int(device)
         """Starts the webcam capture thread."""
+        await self.controller.set_backend(backend)
         await self.controller.start_capture(device)
 
     async def update_available_cameras(self):
@@ -57,6 +66,18 @@ class WebcamWorker(FuncNodesExternalWorker):
         delay = max(0.05, delay)
         self._delay = delay
 
+    @instance_nodefunction(
+        outputs=[
+            {"name": "actual_width", "type": "int"},
+            {"name": "actual_height", "type": "int"},
+        ]
+    )
+    async def set_resolution(self, width: int, height: int) -> Tuple[int, int]:
+        print("Setting resolution", width, height)
+        res = await self.controller.set_resolution(width, height)
+        print("Actual resolution", res)
+        return res
+
     async def loop(self):
         if (
             self.controller._capture_thread is not None
@@ -67,7 +88,7 @@ class WebcamWorker(FuncNodesExternalWorker):
         #        else:
         if time.time() - self._last_device_update > DEVICE_UPDATE_TIME:
             self._last_device_update = time.time()
-            await self.update_available_cameras()
+            asyncio.create_task(self.update_available_cameras())
 
     @instance_nodefunction(
         default_render_options={"data": {"src": "out", "type": "image"}},
@@ -78,6 +99,17 @@ class WebcamWorker(FuncNodesExternalWorker):
         if self._image is None:
             return NoValue
         return self._image
+
+    @instance_nodefunction(
+        default_io_options={
+            "backend": {
+                "value_options": {"options": list(CAPTURE_BACKENDS.keys())},
+            }
+        }
+    )
+    async def set_backend(self, backend: str = DEFAULT_BACKEND[0]):
+        """Sets the backend of the webcam."""
+        return self.controller.set_backend(backend)
 
     @get_image.triggers
     async def update_image(self):
