@@ -7,13 +7,13 @@ import funcnodes as fn
 import asyncio
 
 
-
-
 def passfunc(self, *args, **kwargs):
     pass
 
+
 async def async_passfunc(self, *args, **kwargs):
     pass
+
 
 def add_subclass_tests(cls):
     # Dynamically add test methods from sub_test_classes
@@ -116,14 +116,16 @@ class TestAllNodesBase(unittest.IsolatedAsyncioTestCase):
 
     @classmethod
     def setUpClass(cls):
+        from funcnodes_core import testing
 
-        def get_all_nodes_classes(shelf:fn.Shelf, current=None):
+        testing.setup()
+
+        def get_all_nodes_classes(shelf: fn.Shelf, current=None):
             if current is None:
                 current = []
             for node in shelf.nodes:
-                    if node not in current:
-                        current.append(node)
-
+                if node not in current:
+                    current.append(node)
 
             for subshelf in shelf.subshelves:
                 get_all_nodes_classes(subshelf, current)
@@ -161,6 +163,10 @@ class TestAllNodesBase(unittest.IsolatedAsyncioTestCase):
     @classmethod
     def tearDownClass(cls):
         # undo the monkey patching
+        from funcnodes_core import testing
+
+        testing.teardown()
+
         for node_class in cls.all_nodes:
             if hasattr(node_class, "TestAllNodes_func"):
                 node_class.func = node_class.TestAllNodes_func
@@ -169,5 +175,5 @@ class TestAllNodesBase(unittest.IsolatedAsyncioTestCase):
         # Final assertion to ensure all nodes were tested
         if cls.nodes_to_test:
             raise AssertionError(
-                f"These nodes were not tested ({ len(cls.nodes_to_test) }): { cls.nodes_to_test}"
+                f"These nodes were not tested ({len(cls.nodes_to_test)}): {cls.nodes_to_test}"
             )

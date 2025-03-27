@@ -9,3 +9,6 @@ __pycache__/
 *$py.class
 dist/
 /.licensecheck
+*egg-info
+.funcnodes/
+dev/
