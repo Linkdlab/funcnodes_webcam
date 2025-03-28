@@ -1,9 +1,9 @@
 from typing import Tuple
 from funcnodes import (
-    FuncNodesExternalWorker,
     instance_nodefunction,
     NoValue,
 )
+from funcnodes_worker import FuncNodesExternalWorker
 import time
 from .utils import (
     list_available_cameras,
