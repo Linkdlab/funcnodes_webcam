@@ -684,7 +684,7 @@ wheels = [
 
 [[package]]
 name = "funcnodes"
-version = "0.5.36"
+version = "0.5.37"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "funcnodes-basic" },
@@ -698,9 +698,9 @@ dependencies = [
     { name = "venvmngr", marker = "sys_platform != 'emscripten'" },
     { name = "virtualenv", marker = "sys_platform != 'emscripten'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/8b/e6/4f2dc1b2bb4fc4bf9874212785d875f4ac746fec5ae4135cdb37bc8a12a1/funcnodes-0.5.36.tar.gz", hash = "sha256:112d196422563740535e34136a271b0069973ba8f2baf2af3b6a7c6eda0b4f55", size = 42121 }
+sdist = { url = "https://files.pythonhosted.org/packages/73/06/1214ad0928455311cae3972b5fb5154a6e1131fac1cfbf1b4ac52adff251/funcnodes-0.5.37.tar.gz", hash = "sha256:3e8d16d744124a167d7d9d2fd3d7f034a2fc753a766d452fda69f65e368dffd9", size = 42099 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ff/fc/81c38631276ecb642012e62f6eaef37cec1a2f734f53d0c9c1b6bb9ef6b9/funcnodes-0.5.36-py3-none-any.whl", hash = "sha256:953b8894735db38fe89b455356a3b063077b1cec5635b937d176409349c3bf25", size = 38854 },
+    { url = "https://files.pythonhosted.org/packages/04/05/d4e2504aaeccfba16687cf8fb6efdd55080a35b368c3ee704b5a0c44265b/funcnodes-0.5.37-py3-none-any.whl", hash = "sha256:6abfbd293e9859ff0586a04b906645f2920bc4b1d9e8ac06dfbab2347a58b32f", size = 38858 },
 ]
 
 [package.optional-dependencies]
@@ -754,15 +754,15 @@ wheels = [
 
 [[package]]
 name = "funcnodes-module"
-version = "0.2.9"
+version = "0.2.10"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "licensecheck", marker = "python_full_version < '4'" },
     { name = "toml" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/93/00/ffbebe0ab782eeab2871bc74d8bbfc7bc4d3b4b405f4944b2029eabdcf8c/funcnodes_module-0.2.9.tar.gz", hash = "sha256:d914c5d74b0bee940fec9c366892048f9716ab5657207855cf6824cae68090fc", size = 35275 }
+sdist = { url = "https://files.pythonhosted.org/packages/73/f0/643f0f734c7c1c51fd2c8c67a9555e2743438f726a57964ddf34d00c7200/funcnodes_module-0.2.10.tar.gz", hash = "sha256:98426d74c5423dd546e5d3b29d159c89bb46b7d92c007dde277de6ba6342c961", size = 35353 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/31/dc/83004549b857d3fe0650acf9c26e4d0ca1b63803ecb3096aa5979514cc06/funcnodes_module-0.2.9-py3-none-any.whl", hash = "sha256:63ce5728aaa8c4900ebbd91ac0436e37c63e4484773ef8e8c7860cd83f36cfcb", size = 40776 },
+    { url = "https://files.pythonhosted.org/packages/11/c1/06dce82eb5b9c80c878be38b34409342238d7d23f8c8278932b9fdf02987/funcnodes_module-0.2.10-py3-none-any.whl", hash = "sha256:936d87db677db4a37af3c02f7cbd209b6a6f6cbc67809fdd10e4679aea45c65a", size = 40860 },
 ]
 
 [[package]]
@@ -780,7 +780,7 @@ wheels = [
 
 [[package]]
 name = "funcnodes-opencv"
-version = "0.2.17"
+version = "0.2.18"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "funcnodes" },
@@ -790,9 +790,9 @@ dependencies = [
     { name = "opencv-python", marker = "sys_platform == 'emscripten'" },
     { name = "opencv-python-headless", marker = "sys_platform != 'emscripten'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/76/5a/92610d3150586a8c46d148e47002bda9ee66f56ec9718ef61ae1fe4f8fde/funcnodes_opencv-0.2.17.tar.gz", hash = "sha256:94844bc76fe5ffde97cbc1b16a8b5ef83d57b5440b7ff6971b62388a589362b5", size = 202004 }
+sdist = { url = "https://files.pythonhosted.org/packages/df/07/339c2b6ee21f477a0776f8b74085944fc8ee2621c5c4d08539201bc6d1ce/funcnodes_opencv-0.2.18.tar.gz", hash = "sha256:420b6e9d772064fa6efddf82f05b11c73931b9a4c9a485b47d7fceebf5bd6832", size = 202140 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/02/cd/f72bbb4708fd31f29bb21961e4059c57c98d1544de066bcf906034f17e47/funcnodes_opencv-0.2.17-py3-none-any.whl", hash = "sha256:b52a3ffaeb9e5b6f2710fa94bd25b1d7710a7766e990d59a9c3658cc2d14e2bd", size = 37011 },
+    { url = "https://files.pythonhosted.org/packages/01/84/16fd79b78250bcf6050f40deb098fcf0294f06d018f6922a26749ac415d8/funcnodes_opencv-0.2.18-py3-none-any.whl", hash = "sha256:3c497fd6d1630a6362d3f9df727cd5091ff697386a0c5f381e8178112f3e6a3e", size = 37093 },
 ]
 
 [[package]]
@@ -811,7 +811,7 @@ wheels = [
 
 [[package]]
 name = "funcnodes-webcam"
-version = "0.1.3"
+version = "0.1.4"
 source = { editable = "." }
 dependencies = [
     { name = "funcnodes" },
@@ -2542,14 +2542,14 @@ wheels = [
 
 [[package]]
 name = "types-setuptools"
-version = "76.0.0.20250313"
+version = "77.0.2.20250328"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "setuptools" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/b8/0f/2d1d000c2be3919bcdea15e5da48456bf1e55c18d02c5509ea59dade1408/types_setuptools-76.0.0.20250313.tar.gz", hash = "sha256:b2be66f550f95f3cad2a7d46177b273c7e9c80df7d257fa57addbbcfc8126a9e", size = 43627 }
+sdist = { url = "https://files.pythonhosted.org/packages/60/54/5f3d3f07663f94f87506bece0ef166b8b89ad00fb951d6e4f00795c9be19/types_setuptools-77.0.2.20250328.tar.gz", hash = "sha256:0d4d03c89ef34a4a81e19ee797ed1ea4496ef787524e03b40dcf91ba0328e8f5", size = 43990 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ca/89/ea9669a0a76b160ffb312d0b02b15bad053c1bc81d2a54e42e3a402ca754/types_setuptools-76.0.0.20250313-py3-none-any.whl", hash = "sha256:bf454b2a49b8cfd7ebcf5844d4dd5fe4c8666782df1e3663c5866fd51a47460e", size = 65845 },
+    { url = "https://files.pythonhosted.org/packages/2c/8f/ef5a20fa17dcbf6bfe59199d2e4d020d95c3dcb6415506080bdc9f566dbd/types_setuptools-77.0.2.20250328-py3-none-any.whl", hash = "sha256:034fb89e346fc8b19be25b73c304b64bd8d7e6a4f7a20d21be38ee67f8ed081d", size = 66995 },
 ]
 
 [[package]]

@@ -1,9 +1,9 @@
-from typing import Tuple
+from typing import Tuple, Literal
 from funcnodes import (
-    FuncNodesExternalWorker,
     instance_nodefunction,
     NoValue,
 )
+from funcnodes_worker import FuncNodesExternalWorker
 import time
 from .utils import (
     list_available_cameras,
@@ -119,3 +119,7 @@ class WebcamWorker(FuncNodesExternalWorker):
     async def stop(self):
         await self.stop_capture()
         return await super().stop()
+
+    @instance_nodefunction()
+    def set_rotation(self, rotation: Literal[0, 90, 180, 270] = 0):
+        self.controller.set_rotation(int(rotation))
