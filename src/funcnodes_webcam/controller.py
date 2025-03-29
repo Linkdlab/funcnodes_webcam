@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Literal
 import threading
 import time
 import numpy as np
@@ -18,6 +18,7 @@ class WebcamController:
         self._capturing = False
         self._cap = None
         self._cap_lock = threading.Lock()
+        self.set_rotation(0)
 
     async def start_capture(self, device: int = -1):
         """Starts the webcam capture thread."""
@@ -98,7 +99,7 @@ class WebcamController:
     def get_last_frame(self) -> Optional[np.ndarray]:
         """Returns the last frame captured by the webcam."""
         with self._image_lock:
-            return self._last_frame
+            return self._rotation_func(self._last_frame)
 
     async def stop_capture(self):
         """Stops the webcam capture thread."""
@@ -142,3 +143,21 @@ class WebcamController:
                 await self.start_capture(self._device)
         else:
             raise ValueError(f"Backend {backend} not found.")
+
+    def set_rotation(self, rotation: Literal[0, 90, 180, 270] = 0):
+        """Sets the rotation of the camera. 0, 90, 180, 270"""
+        rotation = int(rotation)
+        if rotation not in [0, 90, 180, 270]:
+            raise ValueError(
+                "Rotation must be one of the following values: 0, 90, 180, 270"
+            )
+
+        self._rotation = rotation
+        if self._rotation == 0:
+            self._rotation_func = lambda x: x
+        elif self._rotation == 90:
+            self._rotation_func = lambda x: np.rot90(x)
+        elif self._rotation == 180:
+            self._rotation_func = lambda x: np.rot90(x, 2)
+        elif self._rotation == 270:
+            self._rotation_func = lambda x: np.rot90(x, 3)

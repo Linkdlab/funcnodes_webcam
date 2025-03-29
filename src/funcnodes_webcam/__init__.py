@@ -6,7 +6,7 @@ import os
 import base64
 
 FUNCNODES_WORKER_CLASSES = [WebcamWorker]
-__version__ = "0.1.1"
+__version__ = "0.1.4"
 
 
 class BrowserStreamData(TypedDict):
