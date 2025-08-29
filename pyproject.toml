@@ -1,12 +1,12 @@
 [project]
 name = "funcnodes-webcam"
-version = "0.1.4"
+version = "1.0.0"
 description = ""
 readme = "README.md"
 dependencies = [
  "funcnodes-opencv>=0.2.17",
- "funcnodes>=0.5.36",
- "funcnodes-worker>=0.3.1",
+ "funcnodes>=1.0.0",
+ "funcnodes-worker>=1.0.0",
 ]
 requires-python = ">=3.11"
 license = "AGPL-3.0"
