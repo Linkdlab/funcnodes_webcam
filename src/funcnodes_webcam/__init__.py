@@ -6,7 +6,7 @@ import os
 import base64
 
 FUNCNODES_WORKER_CLASSES = [WebcamWorker]
-__version__ = "0.1.4"
+__version__ = "1.0.0"
 
 
 class BrowserStreamData(TypedDict):
@@ -33,7 +33,7 @@ def browser_webcam(
     src: str = None,  # only used in frontend
 ) -> funcnodes_opencv.OpenCVImageFormat:
     """Converts a BrowserStreamData object to an OpenCVImageFormat object."""
-
+    
     data = imagedata["data"]
 
     if isinstance(data, str):
@@ -52,6 +52,6 @@ NODE_SHELF = fn.Shelf(
 
 
 REACT_PLUGIN = {
-    "module": os.path.join(os.path.dirname(__file__), "react_plugin", "main.js"),
+    "module": os.path.join(os.path.dirname(__file__), "react_plugin", "index.iife.js"),
     "css": [],
 }

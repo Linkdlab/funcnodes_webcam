@@ -1,31 +1,29 @@
-import { latest_types } from "@linkdlab/funcnodes_react_flow";
+import * as React from "react";
+import {
+  FuncNodesReactPlugin,
+  LATEST_VERSION,
+  NodeHooksType,
+  RenderPluginFactoryProps,
+  RendererPlugin,
+  NodeHooksProps,
+  useIOStore,
+  useSetIOValueOptions,
+  useIOValueStore,
+  useSetIOValue,
+} from "@linkdlab/funcnodes-react-flow-plugin";
 
-const renderpluginfactory = ({
-  React,
-  fnrf_zst,
-}: latest_types.RenderPluginFactoryProps) => {
-  const WebCamHook: latest_types.NodeHooksType = ({
-    nodecontext,
-  }: latest_types.NodeHooksProps) => {
+const renderpluginfactory = ({}: RenderPluginFactoryProps) => {
+  const WebCamHook: NodeHooksType = ({}: NodeHooksProps) => {
     const [stream, setStream] = React.useState<MediaStream | null>(null);
-    const { preview: delay_ms } = nodecontext.node_data.io[
-      "delay_ms"
-    ]?.valuestore() || {
-      preview: { value: 1000 },
-    };
-    const { preview: quality } = nodecontext.node_data.io[
-      "quality"
-    ]?.valuestore() || {
-      preview: { value: 70 },
-    };
-
-    const { preview: src } = nodecontext.node_data.io["src"]?.valuestore() || {
-      preview: { value: null },
-    };
+    const delay_io_store = useIOValueStore("delay_ms");
+    const quality_io_store = useIOValueStore("quality");
+    const src_io_store = useIOValueStore("src");
+    const set_imagedata_io_value = useSetIOValue("imagedata");
+    const set_src_value_options = useSetIOValueOptions("src");
 
     React.useEffect(() => {
       async function initWebcam() {
-        const value = src?.value;
+        const value = src_io_store?.preview?.value;
         if (value === null || value === undefined || value === "null") {
           setStream(null);
           return;
@@ -34,7 +32,7 @@ const renderpluginfactory = ({
           //setStream(await navigator.mediaDevices.getUserMedia({ video: true }));
           setStream(
             await navigator.mediaDevices.getUserMedia({
-              video: { deviceId: { exact: value } },
+              video: { deviceId: { exact: value.toString() } },
             })
           );
           // Set up an interval to capture a frame (adjust interval as needed)
@@ -49,7 +47,7 @@ const renderpluginfactory = ({
           stream.getTracks().forEach((track) => track.stop());
         }
       };
-    }, [src]);
+    }, [src_io_store]);
 
     React.useEffect(() => {
       async function updateOptions() {
@@ -66,28 +64,29 @@ const renderpluginfactory = ({
             labels.push(device.label || "camera " + (i + 1));
           }
         }
-        fnrf_zst.worker?._send_cmd({
-          cmd: "update_io_value_options",
-          kwargs: {
-            nid: nodecontext.node_data.id,
-            ioid: "src",
-            options: {
-              options: {
-                type: "enum",
-                values: ids,
-                keys: labels,
-                nullable: true,
-              },
-            },
-          },
+        set_src_value_options({
+          values: ids,
+          keys: labels,
+          nullable: true,
         });
       }
       updateOptions();
-    }, []);
+    }, [set_src_value_options]);
 
     React.useEffect(() => {
       if (!stream) return;
+      const quality = quality_io_store?.preview;
+      const delay_ms = delay_io_store?.preview;
       if (quality === undefined || delay_ms === undefined) return;
+      let quality_value = parseFloat((quality.value ?? 70).toString());
+      if (isNaN(quality_value)) quality_value = 70;
+      if (quality_value < 0) quality_value = 0;
+      if (quality_value > 100) quality_value = 100;
+
+      let delay_ms_value = parseFloat((delay_ms.value ?? 1000).toString());
+      if (isNaN(delay_ms_value)) delay_ms_value = 1000;
+      if (delay_ms_value < 0) delay_ms_value = 0;
+
       const video = document.createElement("video");
       video.srcObject = stream;
       video.play().catch(() => {});
@@ -95,6 +94,7 @@ const renderpluginfactory = ({
       const interval = setInterval(async () => {
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
+
         const ctx = canvas.getContext("2d");
         if (!ctx) return;
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
@@ -109,45 +109,46 @@ const renderpluginfactory = ({
                 ""
               )
             );
-            fnrf_zst.worker?.set_io_value({
-              nid: nodecontext.node_data.id,
-              ioid: "imagedata",
-              value: {
+
+            set_imagedata_io_value(
+              {
                 width: canvas.width,
                 height: canvas.height,
                 data: base64,
               },
-              set_default: false,
-            });
+
+              false
+            );
           },
           "image/jpeg",
-          quality.value / 100
+          quality_value / 100
         );
-      }, delay_ms.value); // capture one frame per second; adjust if needed
+      }, delay_ms_value); // capture one frame per second; adjust if needed
       return () => {
         clearInterval(interval);
         video.pause();
         video.srcObject = null;
       };
-    }, [stream, quality, delay_ms]);
+    }, [stream, quality_io_store, delay_io_store, set_imagedata_io_value]);
+
+    return <></>;
   };
 
-  const MyRendererPlugin: latest_types.RendererPlugin = {
+  const MyRendererPlugin: RendererPlugin = {
     handle_preview_renderers: {},
     data_overlay_renderers: {},
     data_preview_renderers: {},
     data_view_renderers: {},
     input_renderers: {},
-    node_context_extenders: {},
     node_hooks: { "webcam.browserwebcam": [WebCamHook] },
   };
 
   return MyRendererPlugin;
 };
 
-const Plugin: latest_types.FuncNodesReactPlugin = {
+const Plugin: FuncNodesReactPlugin = {
   renderpluginfactory: renderpluginfactory,
-  v: 1,
+  v: LATEST_VERSION,
 };
 
 export default Plugin;
